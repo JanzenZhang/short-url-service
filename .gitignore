@@ -1,0 +1,9 @@
+/target
+/debug
+/release
+**/*.rs.bk
+*.db
+*.db-shm
+*.db-wal
+.env
+.DS_Store

@@ -1,0 +1,26 @@
+[package]
+name = "short-url-service"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = "0.8.8"
+axum-extra = "0.12.5"
+base64 = "0.22.1"
+chrono = { version = "0.4.43", features = ["serde"] }
+dotenvy = "0.15.7"
+governor = "0.10.4"
+image = "0.25.9"
+qrcode = "0.14.1"
+rand = "0.8.5"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+sqlx = { version = "0.8.6", features = ["runtime-tokio-rustls", "sqlite", "chrono"] }
+tokio = { version = "1.49.0", features = ["full"] }
+tower = { version = "0.5.3", features = ["full"] }
+tower-http = { version = "0.6.8", features = ["cors", "trace", "fs"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
+utoipa = { version = "5.4.0", features = ["axum_extras", "chrono"] }
+utoipa-swagger-ui = { version = "9.0.2", features = ["axum"] }
+validator = { version = "0.20.0", features = ["derive"] }
