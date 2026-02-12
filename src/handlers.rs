@@ -162,14 +162,15 @@ pub async fn get_stats(
     Path(code): Path<String>,
 ) -> Result<Json<StatsResponse>, AppError> {
     // Check if URL exists first
-    let exists: bool = sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM urls WHERE id = ?)")
+    let url_record: Option<UrlRecord> = sqlx::query_as("SELECT * FROM urls WHERE id = ?")
         .bind(&code)
-        .fetch_one(&pool)
+        .fetch_optional(&pool)
         .await?;
 
-    if !exists {
-        return Err(AppError::UrlNotFound);
-    }
+    let url = match url_record {
+        Some(u) => u,
+        None => return Err(AppError::UrlNotFound),
+    };
 
     let visits: Vec<VisitStats> = sqlx::query_as("SELECT ip_address, user_agent, visited_at FROM visits WHERE url_id = ? ORDER BY visited_at DESC LIMIT 100")
         .bind(&code)
@@ -183,6 +184,7 @@ pub async fn get_stats(
 
     Ok(Json(StatsResponse {
         url: code,
+        original_url: url.original_url,
         total_visits: total,
         visits,
     }))

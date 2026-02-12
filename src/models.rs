@@ -42,6 +42,7 @@ pub struct VisitStats {
 #[derive(Debug, Serialize, ToSchema)]
 pub struct StatsResponse {
     pub url: String,
+    pub original_url: String,
     pub total_visits: i64,
     pub visits: Vec<VisitStats>,
 }
