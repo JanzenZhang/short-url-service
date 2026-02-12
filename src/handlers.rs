@@ -12,7 +12,6 @@ use chrono::Utc;
 use qrcode::QrCode;
 use qrcode::render::svg;
 use sqlx::{Pool, Sqlite};
-use std::net::SocketAddr;
 use validator::Validate;
 
 type DbPool = Pool<Sqlite>;
@@ -209,7 +208,7 @@ pub async fn generate_qr(
         .fetch_optional(&pool)
         .await?;
 
-    let url = match url_record {
+    let _url = match url_record {
         Some(u) => u,
         None => return Err(AppError::UrlNotFound),
     };
