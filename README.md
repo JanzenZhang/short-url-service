@@ -94,7 +94,14 @@ curl http://127.0.0.1:3000/stats/rust
 ## ⚙️ Configuration
 
 The application uses a `.env` file for configuration.
-- `DATABASE_URL`: Connection string for SQLite (default: `sqlite:shortener.db?mode=rwc`).
+
+### Example `.env` File
+```dotenv
+DATABASE_URL=sqlite:shortener.db?mode=rwc
+RUST_LOG=info
+```
+
+- `DATABASE_URL`: Connection string for SQLite. `mode=rwc` ensures the database file is created if it doesn't exist.
 - `RUST_LOG`: Log level (default: `info` or `debug`).
 
 ## 📄 License
