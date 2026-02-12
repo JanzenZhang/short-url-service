@@ -1,55 +1,102 @@
-# Rust URL Shortener Service
+# 🔗 SwiftLink - Rust URL Shortener
 
-A high-performance URL shortener service built with Rust, Axum, SQLx, and SQLite.
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Rust](https://img.shields.io/badge/rust-1.75%2B-orange.svg)
+![Axum](https://img.shields.io/badge/framework-axum-red.svg)
 
-## Features
-- Create short links with random or custom codes.
-- Redirect to original URLs.
-- Track visit statistics (IP, User-Agent, Time).
-- QR Code generation for short links.
-- Link expiration support.
-- API Documentation (Swagger UI).
-- Simple Web Interface.
+A high-performance, self-hosted URL shortener service built with Rust. It features a modern, responsive web interface, comprehensive visit statistics, and a robust REST API.
 
-## Tech Stack
-- **Framework:** Axum
+## ✨ Features
+
+- **🚀 High Performance**: Built on the blazing fast `Axum` web framework and `Tokio` runtime.
+- **🎨 Modern UI**: Clean, responsive web interface with:
+    - **Quick Shorten**: Generate random or custom short codes.
+    - **Smart Lookup**: Query short codes to view the original URL and stats without redirecting.
+    - **QR Codes**: Instant SVG QR code generation for every link.
+    - **Tabbed Interface**: Seamless switching between creation and lookup modes.
+- **📊 Analytics**: Track detailed visit statistics including:
+    - Total visit counts.
+    - Visitor IP addresses (respects `X-Forwarded-For`).
+    - User-Agent strings.
+    - Timestamped visit logs.
+- **🔗 Link Management**:
+    - **Custom Aliases**: User-defined short codes (e.g., `/my-promo`).
+    - **Expiration**: Set optional expiration dates for links.
+- **📚 API Documentation**: Interactive Swagger UI generated via `Utoipa`.
+
+## 🛠️ Tech Stack
+
+- **Language:** Rust
+- **Web Framework:** Axum 0.8
 - **Database:** SQLite (via SQLx)
-- **Runtime:** Tokio
-- **Documentation:** Utoipa (Swagger UI)
+- **Async Runtime:** Tokio
+- **API Docs:** Utoipa (Swagger UI)
+- **Serialization:** Serde
+- **Frontend:** HTML5, CSS3 (Internal styling), Vanilla JS
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
-- Rust (latest stable)
-- SQLite (optional, `sqlx` handles the DB file)
 
-### Running
+- **Rust**: Latest stable version.
+- **SQLite**: (Optional) The application manages the database file automatically.
 
-1. **Install Dependencies & Build**
-   ```bash
-   cargo build
-   ```
+### Installation & Run
 
-2. **Run the Server**
-   ```bash
-   cargo run
-   ```
-   The server will start at `http://localhost:3000`.
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/JanzenZhang/short-url-service.git
+    cd short-url-service
+    ```
 
-3. **Use the Web Interface**
-   Open `http://localhost:3000` in your browser.
+2.  **Build the project**
+    ```bash
+    cargo build --release
+    ```
 
-### API Endpoints
+3.  **Run the server**
+    ```bash
+    cargo run
+    ```
+    The server will start listening on `http://127.0.0.1:3000`.
 
-- **POST /shorten**: Create a short link.
-  - Body: `{"url": "https://example.com", "custom_code": "optional", "expires_at": "optional_iso_date"}`
-- **GET /{code}**: Redirect to original URL.
-- **GET /stats/{code}**: Get visit statistics.
-- **GET /qr/{code}**: Get QR code SVG.
+4.  **Access the Application**
+    - **Web UI:** Open `http://127.0.0.1:3000` in your browser.
+    - **API Docs:** Visit `http://127.0.0.1:3000/swagger-ui`.
 
-### API Documentation
-Visit `http://localhost:3000/swagger-ui` for interactive API docs.
+## 🔌 API Endpoints
 
-## Configuration
-- `.env` file contains `DATABASE_URL`.
-- Default port is `3000`.
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/shorten` | Create a new short link. |
+| `GET` | `/{code}` | Redirect to the original URL. |
+| `GET` | `/stats/{code}` | Retrieve stats and original URL. |
+| `GET` | `/qr/{code}` | Get the QR code image (SVG). |
+
+### Example Request
+
+**Shorten a URL:**
+```bash
+curl -X POST http://127.0.0.1:3000/shorten \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://www.rust-lang.org",
+    "custom_code": "rust",
+    "expires_at": "2026-12-31T23:59:59Z"
+  }'
+```
+
+**Get Stats:**
+```bash
+curl http://127.0.0.1:3000/stats/rust
+```
+
+## ⚙️ Configuration
+
+The application uses a `.env` file for configuration.
+- `DATABASE_URL`: Connection string for SQLite (default: `sqlite:shortener.db?mode=rwc`).
+- `RUST_LOG`: Log level (default: `info` or `debug`).
+
+## 📄 License
+
+This project is licensed under the MIT License.
